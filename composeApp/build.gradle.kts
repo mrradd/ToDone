@@ -8,6 +8,39 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+    id("app.cash.sqldelight") version "2.1.0"
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+sqldelight {
+    databases {
+        create("ToDoneDb") {
+            packageName.set("com.rad.db")
+            srcDirs.setFrom("src/commonMain/sqldelight")
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
+            verifyMigrations.set(true)
+            dialect("app.cash.sqldelight:sqlite-3-38-dialect:2.1.0")
+        }
+    }
+}
+
+kotlin {
+    sourceSets.androidMain.dependencies {
+        implementation("app.cash.sqldelight:android-driver:2.1.0")
+    }
+
+    // or iosMain, windowsMain, etc.
+    sourceSets.nativeMain.dependencies {
+        implementation("app.cash.sqldelight:native-driver:2.1.0")
+    }
+
+    sourceSets.jvmMain.dependencies {
+        implementation("app.cash.sqldelight:sqlite-driver:2.1.0")
+    }
 }
 
 kotlin {
@@ -41,6 +74,7 @@ kotlin {
     }
 
     sourceSets {
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
