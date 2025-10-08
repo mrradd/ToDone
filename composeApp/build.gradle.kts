@@ -19,11 +19,7 @@ repositories {
 sqldelight {
     databases {
         create("ToDoneDb") {
-            packageName.set("com.rad.db")
-            srcDirs.setFrom("src/commonMain/sqldelight")
-            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
-            verifyMigrations.set(true)
-            dialect("app.cash.sqldelight:sqlite-3-38-dialect:2.1.0")
+            packageName.set("com.rad.todone.database")
         }
     }
 }

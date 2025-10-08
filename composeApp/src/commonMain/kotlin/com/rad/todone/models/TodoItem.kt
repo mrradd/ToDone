@@ -1,10 +1,9 @@
 package com.rad.todone.models
 
 import utils.generateUUID
-import kotlin.uuid.ExperimentalUuidApi
 
-data class TodoItem @OptIn(ExperimentalUuidApi::class) constructor(
+data class TodoItem (
     val id: String = generateUUID(),
     val text: String,
-    val isCompleted: Boolean = false
+    val isCompleted: Long? = 0 //Treat this as a boolean. 1 = true. 0 = false. For some reason SQLDelight made it a long.
 )
