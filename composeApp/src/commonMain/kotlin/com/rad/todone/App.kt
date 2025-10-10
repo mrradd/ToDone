@@ -2,16 +2,20 @@ package com.rad.todone
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -30,7 +34,8 @@ fun App(todoQueries: TodoDatabaseQueries) {
             Modifier.fillMaxSize().background(Color.White).padding(16.dp)
         ) {
             Text(text = "ToDone",
-                Modifier.padding(16.dp))
+                Modifier.padding(16.dp)
+            )
 
             LaunchedEffect(todoQueries){
                 val itemsFromDb = todoQueries.selectAllTodos().executeAsList()
@@ -41,12 +46,12 @@ fun App(todoQueries: TodoDatabaseQueries) {
                 value = newTodoText,
                 onValueChange = { newTodoText = it },
                 label = { Text("New Task") },
-                modifier = Modifier.fillMaxWidth())
+                modifier = Modifier.fillMaxWidth()
+            )
 
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    println("derp")
                     if (newTodoText.isNotBlank())
                     {
                         val newItem = TodoItem(text = newTodoText)
@@ -56,7 +61,8 @@ fun App(todoQueries: TodoDatabaseQueries) {
                             text = newItem.text,
                             isCompleted = newItem.isCompleted)
                     }
-                }) {
+                }
+            ) {
                 Text("Add Task")
             }
 
@@ -69,9 +75,24 @@ fun App(todoQueries: TodoDatabaseQueries) {
                 else
                 {
                     todoList.forEach { todo ->
-                        Text (
-                            text = todo.text,
-                            Modifier.padding(vertical = 4.dp))
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Text (
+                                text = todo.text,
+                                Modifier.padding(vertical = 4.dp).weight(1f)
+                            )
+                            Spacer(Modifier.width(8.dp))
+                            Button(
+                                onClick = {
+                                    todoQueries.deleteTodoById(todo.id)
+                                    todoList.remove(todo)
+                                }
+                            ) {
+                                Text("Delete")
+                            }
+                        }
                     }
                 }
             }

@@ -15,10 +15,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        // Initialize the database for Android
-        val driver = DriverFactory(this).createDriver() // Pass 'this' (the Activity Context)
+        val driver = DriverFactory(this).createDriver() //'this' is the Activity Context
         val database = ToDoneDb(driver)
-        val todoQueries = database.todoDatabaseQueries // Get the queries
+        val todoQueries = database.todoDatabaseQueries
 
         setContent {
             MaterialTheme {
